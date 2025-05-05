@@ -126,7 +126,7 @@
       <label for="c">c</label>
     </div>
     <span>= 0</span>
-    <button onclick="generateParabola()">Solve</button>
+    <button onclick="generateParabola()">Լուծել</button>
   </div>
   
   
@@ -152,14 +152,14 @@
       if (discriminant > 0) {
         root1 = (-b + Math.sqrt(discriminant)) / (2 * a);
         root2 = (-b - Math.sqrt(discriminant)) / (2 * a);
-        rootsText = `The equation has two real roots: x<sub>1</sub> = ${root1.toFixed(2)}, x<sub>2</sub> = ${root2.toFixed(2)}`;
+        rootsText = `Հավասարումը ունի երկու իրական արմատ: x<sub>1</sub> = ${root1.toFixed(2)}, x<sub>2</sub> = ${root2.toFixed(2)}`;
       } else if (discriminant === 0) {
         root1 = root2 = -b / (2 * a);
-        rootsText = `The equation has one real root: x = ${root1.toFixed(2)}`;
+        rootsText = `Հավասարումը ունի մեկ իրական արմատ: x = ${root1.toFixed(2)}`;
       } else {
         const realPart = (-b / (2 * a)).toFixed(2);
         const imaginaryPart = (Math.sqrt(-discriminant) / (2 * a)).toFixed(2);
-        rootsText = `The equation has two imaginary roots: x<sub>1</sub> = ${realPart} + ${imaginaryPart}i, x<sub>2</sub> = ${realPart} - ${imaginaryPart}i`;
+        rootsText = `Հավասարումը ունի երկու կեղծ արմատներ: x<sub>1</sub> = ${realPart} + ${imaginaryPart}i, x<sub>2</sub> = ${realPart} - ${imaginaryPart}i`;
       }
   
       const vertexX = -b / (2 * a);
