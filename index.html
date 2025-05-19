@@ -14,24 +14,28 @@
       min-height: 100vh;
       margin: 0;
       font-family: Arial, sans-serif;
-      background-color: #0c0f14;
+      background-color: #ffffff;
+      color: #000000;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    body.dark {
+      background-color: #121212;
+      color: #eeeeee;
     }
 
     h1 {
       font-size: 2rem;
-      color: #0037ff;
       margin-bottom: 20px;
     }
 
     .input-container {
-    display: flex;
-    align-items: center; /* ensures horizontal alignment */
-    justify-content: center;
-    gap: 4px;
-    margin-bottom: 0px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      margin-bottom: 0px;
     }
-
-
 
     .input-container label {
       color: blue;
@@ -39,10 +43,14 @@
       font-size: 20px;
     }
 
+    body.dark .input-container label {
+      color: #69aaff;
+    }
+
     .input-container input {
-      background-color: #082035;
-      color: white;
-      border: 2px solid #000;
+      background-color: #ffffff;
+      color: rgb(0, 0, 0);
+      border: 2px solid #090089;
       border-radius: 12px;
       padding: 5px 10px;
       font-size: 1.2rem;
@@ -50,189 +58,321 @@
       text-align: center;
       vertical-align: bottom;
       position: relative;
-      top: 30px; /* adjust this value to fine-tune the vertical alignment */
+      top: 30px;
+      transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+    }
+
+    body.dark .input-container input {
+      background-color: #222;
+      color: #eee;
+      border-color: #69aaff;
     }
 
     .input-container span {
-      color: white;
       font-size: 1.5rem;
+      color: #000;
+      user-select: none;
+    }
+
+    body.dark .input-container span {
+      color: #ddd;
     }
 
     .input-container button {
-      background-color: #0c1e30;
-      color: white;
-      border: 2px solid #1e90ff;
+      background-color: #ffffff;
+      color: rgb(0, 0, 0);
+      border: 2px solid #090089;
       border-radius: 12px;
       padding: 5px 15px;
       font-size: 1rem;
       cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
     }
 
     .input-container button:hover {
-      background-color: #123c66;
+      background-color: #090089;
+      color: white;
+    }
+
+    body.dark .input-container button {
+      background-color: #222;
+      color: #eee;
+      border-color: #69aaff;
+    }
+
+    body.dark .input-container button:hover {
+      background-color: #69aaff;
+      color: #000;
     }
 
     p#roots {
       font-weight: bold;
       font-size: 1.2rem;
       margin-top: 20px;
-      color: white;
+      color: rgb(0, 0, 0);
+    }
+
+    body.dark p#roots {
+      color: #eee;
     }
 
     canvas {
       margin-top: 20px;
-      border: 1px solid #000;
+      border: 1px solid #090089;
       background-color: white;
+      transition: background-color 0.3s, border-color 0.3s;
+    }
+
+    body.dark canvas {
+      background-color: #222;
+      border-color: #69aaff;
     }
 
     .input-group {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
     }
 
     .input-group input {
-    margin-bottom: 0;
+      margin-bottom: 0;
     }
 
     .input-group label {
-    margin-top: 30px;
-    font-size: 24px;
-    color: blue;
-    font-weight: bold;
+      margin-top: 30px;
+      font-size: 24px;
+      font-weight: bold;
+      color: rgb(0, 0, 0);
     }
 
+    body.dark .input-group label {
+      color: #eee;
+    }
 
+    /* Theme toggle button */
+    .theme-toggle {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      font-size: 1.8rem;
+      color: inherit;
+      user-select: none;
+      padding: 5px 10px;
+      transition: color 0.3s;
+    }
+
+    .theme-toggle:hover {
+      color: #1e90ff;
+    }
 
   </style>
 </head>
 <body>
-  <h1>Quadratic Equation Solver</h1>
+  <h1>Հավասարում լուծող ծրագիր</h1>
+
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle Dark/Light Mode">🌙</button>
 
   <div class="input-container">
     <div class="input-group">
-      <input type="text" id="a" value="1">
+      <input type="text" id="a" value="1" />
       <label for="a">a</label>
     </div>
     <span>x² +</span>
     <div class="input-group">
-      <input type="text" id="b">
+      <input type="text" id="b" />
       <label for="b">b</label>
     </div>
     <span>x +</span>
     <div class="input-group">
-      <input type="text" id="c" value="1">
+      <input type="text" id="c" value="1" />
       <label for="c">c</label>
     </div>
     <span>= 0</span>
     <button onclick="generateParabola()">Լուծել</button>
   </div>
-  
-  
 
   <p id="roots"></p>
   <canvas id="parabolaCanvas" width="600" height="400"></canvas>
 
   <script>
+    const themeToggleBtn = document.getElementById('themeToggle');
+    themeToggleBtn.addEventListener('click', () => {
+      document.body.classList.toggle('dark');
+      // Change icon
+      if(document.body.classList.contains('dark')) {
+        themeToggleBtn.textContent = '☀️';
+      } else {
+        themeToggleBtn.textContent = '🌙';
+      }
+    });
+
+    function formatNumber(num) {
+      const absNum = Math.abs(num);
+      if (absNum >= 1e6) {
+        return (num / 1e6).toFixed(1) + 'M';
+      } else if (absNum >= 1e3) {
+        return (num / 1e3).toFixed(1) + 'k';
+      }
+      return num.toString();
+    }
+
     function generateParabola() {
       const canvas = document.getElementById('parabolaCanvas');
       const ctx = canvas.getContext('2d');
       const width = canvas.width;
       const height = canvas.height;
-  
-      const a = parseFloat(document.getElementById('a').value);
+
+      const aVal = document.getElementById('a').value;
+      const a = parseFloat(aVal);
       const b = parseFloat(document.getElementById('b').value);
       const c = parseFloat(document.getElementById('c').value);
-  
+
+      let rootsText = "";
+      ctx.clearRect(0, 0, width, height);
+
+      const xRange = 10;
+      const yRange = 10;
+      const xScale = width / (2 * xRange + 2);
+      const yScale = height / (2 * yRange + 2);
+
+      function drawAxes() {
+        ctx.beginPath();
+        ctx.moveTo(0, height / 2);
+        ctx.lineTo(width, height / 2);
+        ctx.moveTo(width / 2, 0);
+        ctx.lineTo(width / 2, height);
+        ctx.strokeStyle = '#aaa';
+        ctx.stroke();
+
+        ctx.font = '10px Arial';
+        ctx.fillStyle = getComputedStyle(document.body).color;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+
+        for (let i = -xRange; i <= xRange; i++) {
+          const x = width / 2 + i * xScale;
+          ctx.fillText(formatNumber(i), x, height / 2 + 10);
+          ctx.beginPath();
+          ctx.moveTo(x, height / 2 - 3);
+          ctx.lineTo(x, height / 2 + 3);
+          ctx.stroke();
+        }
+
+        for (let i = -yRange; i <= yRange; i++) {
+          const y = height / 2 - i * yScale;
+          ctx.fillText(formatNumber(i), width / 2 - 10, y);
+          ctx.beginPath();
+          ctx.moveTo(width / 2 - 3, y);
+          ctx.lineTo(width / 2 + 3, y);
+          ctx.stroke();
+        }
+      }
+
+      function drawDot(xValue) {
+        const x = width / 2 + xValue * xScale;
+        const y = height / 2;
+        ctx.beginPath();
+        ctx.arc(x, y, 4, 0, Math.PI * 2);
+        ctx.fillStyle = 'blue';
+        ctx.fill();
+      }
+
+      // LINEAR CASE
+      if (!aVal || a === 0) {
+        if (b === 0) {
+          rootsText = c === 0
+            ? "Անվերջ թվով լուծումներ"
+            : "Լուծում չկա";
+        } else {
+          const x = -c / b;
+          rootsText = `Գծային հավասարման լուծումն է: x = ${x.toFixed(2)}`;
+
+          drawAxes();
+
+          ctx.beginPath();
+          for (let px = -xRange; px <= xRange; px += 0.1) {
+            const py = b * px + c;
+            const canvasX = width / 2 + px * xScale;
+            const canvasY = height / 2 - py * yScale;
+            if (px === -xRange) {
+              ctx.moveTo(canvasX, canvasY);
+            } else {
+              ctx.lineTo(canvasX, canvasY);
+            }
+          }
+          ctx.strokeStyle = '#000';
+          ctx.stroke();
+
+          drawDot(x);
+        }
+
+        document.getElementById('roots').innerHTML = rootsText;
+        return;
+      }
+
+      // QUADRATIC CASE
       const discriminant = b * b - 4 * a * c;
       let root1, root2;
-      let rootsText = "";
-  
+
       if (discriminant > 0) {
         root1 = (-b + Math.sqrt(discriminant)) / (2 * a);
         root2 = (-b - Math.sqrt(discriminant)) / (2 * a);
         rootsText = `Հավասարումը ունի երկու իրական արմատ: x<sub>1</sub> = ${root1.toFixed(2)}, x<sub>2</sub> = ${root2.toFixed(2)}`;
+
+        drawAxes();
+
+        ctx.beginPath();
+        for (let px = -xRange; px <= xRange; px += 0.1) {
+          const py = a * px * px + b * px + c;
+          const canvasX = width / 2 + px * xScale;
+          const canvasY = height / 2 - py * yScale;
+          if (px === -xRange) {
+            ctx.moveTo(canvasX, canvasY);
+          } else {
+            ctx.lineTo(canvasX, canvasY);
+          }
+        }
+        ctx.strokeStyle = '#000';
+        ctx.stroke();
+
+        drawDot(root1);
+        drawDot(root2);
+
       } else if (discriminant === 0) {
-        root1 = root2 = -b / (2 * a);
+        root1 = -b / (2 * a);
         rootsText = `Հավասարումը ունի մեկ իրական արմատ: x = ${root1.toFixed(2)}`;
+
+        drawAxes();
+
+        ctx.beginPath();
+        for (let px = -xRange; px <= xRange; px += 0.1) {
+          const py = a * px * px + b * px + c;
+          const canvasX = width / 2 + px * xScale;
+          const canvasY = height / 2 - py * yScale;
+          if (px === -xRange) {
+            ctx.moveTo(canvasX, canvasY);
+          } else {
+            ctx.lineTo(canvasX, canvasY);
+          }
+        }
+        ctx.strokeStyle = '#000';
+        ctx.stroke();
+
+        drawDot(root1);
+
       } else {
         const realPart = (-b / (2 * a)).toFixed(2);
         const imaginaryPart = (Math.sqrt(-discriminant) / (2 * a)).toFixed(2);
         rootsText = `Հավասարումը ունի երկու կեղծ արմատներ: x<sub>1</sub> = ${realPart} + ${imaginaryPart}i, x<sub>2</sub> = ${realPart} - ${imaginaryPart}i`;
       }
-  
-      const vertexX = -b / (2 * a);
-      const vertexY = a * vertexX * vertexX + b * vertexX + c;
-  
-      const xRange = Math.max(Math.abs(root1 || 0), Math.abs(root2 || 0), Math.abs(vertexX), 5);
-      const yRange = Math.max(Math.abs(vertexY), 5);
-  
-      const xScale = width / (2 * xRange + 2);
-      const yScale = height / (2 * yRange + 2);
-  
-      ctx.clearRect(0, 0, width, height);
-      ctx.beginPath();
-      ctx.moveTo(0, height / 2);
-      ctx.lineTo(width, height / 2);
-      ctx.moveTo(width / 2, 0);
-      ctx.lineTo(width / 2, height);
-      ctx.strokeStyle = '#aaa';
-      ctx.stroke();
-  
-      ctx.font = '10px Arial';
-      ctx.fillStyle = '#000';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-  
-      const xLabelStep = Math.ceil(xRange / 5);
-      for (let i = -xRange; i <= xRange; i += xLabelStep) {
-        const x = width / 2 + i * xScale;
-        ctx.fillText(Math.round(i), x, height / 2 + 10);
-        ctx.beginPath();
-        ctx.moveTo(x, height / 2 - 3);
-        ctx.lineTo(x, height / 2 + 3);
-        ctx.stroke();
-      }
-  
-      const yLabelStep = Math.ceil(yRange / 5);
-      for (let i = -yRange; i <= yRange; i += yLabelStep) {
-        const y = height / 2 - i * yScale;
-        ctx.fillText(Math.round(i), width / 2 - 10, y);
-        ctx.beginPath();
-        ctx.moveTo(width / 2 - 3, y);
-        ctx.lineTo(width / 2 + 3, y);
-        ctx.stroke();
-      }
-  
-      ctx.beginPath();
-      ctx.moveTo(-width / 2, height / 2 - (a * (-width / 2 / xScale) * (-width / 2 / xScale) + b * (-width / 2 / xScale) + c) * yScale);
-  
-      for (let x = -width / 2; x <= width / 2; x += 1) {
-        let y = a * (x / xScale) * (x / xScale) + b * (x / xScale) + c;
-        ctx.lineTo(width / 2 + x, height / 2 - y * yScale);
-      }
-  
-      ctx.strokeStyle = '#000';
-      ctx.stroke();
-  
-      if (discriminant >= 0) {
-        drawDot(root1);
-        if (discriminant > 0) drawDot(root2);
-      }
-  
+
       document.getElementById('roots').innerHTML = rootsText;
-  
-      function drawDot(xValue) {
-        const x = width / 2 + xValue * xScale;
-        const y = height / 2;
-        ctx.beginPath();
-        ctx.arc(x, y, 3, 0, Math.PI * 2, true);
-        ctx.fillStyle = 'black';
-        ctx.fill();
-      }
     }
   </script>
-  
+
 </body>
 </html>
